@@ -22,12 +22,34 @@ link_array.insert(7, ["Fictiverse/Stable_Diffusion_Microscopic_model", "Microsco
 
 
 DIR = "models"
+CONFIG = "config"
+
 
 if os.path.exists(DIR) == False:
     os.mkdir(DIR)
     print("Ordner " + DIR + " wurde erstellt.")
+    print("Modelle werden im Ordner " + DIR + " gespeichert.")
 else:
     print("Modelle werden im Ordner " + DIR + " gespeichert.")
+
+if os.path.exists(CONFIG) == False:
+    os.mkdir(CONFIG)
+    print("Ordner " + CONFIG + " wurde erstellt.")
+    print("Konfigurationsdatein werden im Ordner " + CONFIG + " gespeichert.")
+else:
+    print("Konfigurationsdatein werden im Ordner " + CONFIG + " gespeichert.")
+
+
+os.system('wget https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/x4-upscaling.yaml -P ./' + CONFIG)
+os.system('wget https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference-v.yaml -P ./' + CONFIG)
+os.system('wget https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inference.yaml -P ./' + CONFIG)
+os.system('wget https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/configs/stable-diffusion/v2-inpainting-inference.yaml -P ./' + CONFIG)
+
+os.system('cp ./' + CONFIG + '/v2-inference-v.yaml ./stable-diffusion-webui/models/Stable-diffusion/v2-1_768-nonema-pruned.yaml')
+os.system('cp ./' + CONFIG + '/v2-inference-v.yaml ./stable-diffusion-webui/models/Stable-diffusion/512-base-ema.yaml')
+os.system('cp ./' + CONFIG + '/x4-upscaling.yaml ./stable-diffusion-webui/models/Stable-diffusion/x4-upscaler-ema.yaml')
+
+
 
 for i in link_array:
     print("Download Model:")
@@ -39,12 +61,10 @@ for i in link_array:
     print("Modell "+ i[1] +" wird in den Ordner /stable-diffusion-webui/models/Stable-diffusion/ kopiert.")
     print(" ")
 
-os.system('cp ./stable-diffusion-webui/v2-inference-v.yaml ./stable-diffusion-webui/models/Stable-diffusion/v2-1_768-nonema-pruned.yaml')
-
 EOF
 )
 
 python3 -c "$PYCMD"
 
 chmod +x ./stable-diffusion-webui/webui.sh
-./stable-diffusion-webui/webui.sh --share
+./stable-diffusion-webui/webui.sh --no-half --share
