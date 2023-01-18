@@ -47,4 +47,4 @@ EOF
 python3 -c "$PYCMD"
 
 chmod +x ./stable-diffusion-webui/webui.sh
-./stable-diffusion-webui/webui.sh --share
+./stable-diffusion-webui/webui.sh --share --no-half
